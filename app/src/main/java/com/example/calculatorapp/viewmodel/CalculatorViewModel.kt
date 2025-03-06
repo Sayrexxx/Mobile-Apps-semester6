@@ -11,19 +11,44 @@ class CalculatorViewModel : ViewModel() {
     private var firstOperand: Double? = null
 
     fun appendToDisplay(value: String): String {
+        if (currentInput.toString().length > 20) {
+            currentInput.clear()
+        }
+        if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
+            clearDisplay()
+        }
+        if ((value == "." && currentInput.contains('.'))) {
+            currentInput = StringBuilder("error")
+            return currentInput.toString()
+        }
         currentInput.append(value)
         return currentInput.toString()
     }
 
     fun clearDisplay(): String {
         currentInput.clear()
-        currentInput.append("0")
         firstOperand = null
         currentOperator = null
         return currentInput.toString()
     }
 
+    fun backspace(): String {
+        if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
+            clearDisplay()
+        }
+        if (currentInput.isNotEmpty()) {
+            currentInput.deleteCharAt(currentInput.length-1)
+            return currentInput.toString()
+        }
+        else {
+            return "empty input"
+        }
+    }
+
     fun setOperator(operator: String): String {
+        if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
+            clearDisplay()
+        }
         if (currentInput.isNotEmpty()) {
             firstOperand = currentInput.toString().toDouble()
             currentOperator = operator
@@ -33,6 +58,9 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun calculateResult(): String {
+        if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
+            clearDisplay()
+        }
         if (currentInput.isNotEmpty() && firstOperand != null && currentOperator != null) {
             val secondOperand = currentInput.toString().toDouble()
             val result = when (currentOperator) {
@@ -43,11 +71,15 @@ class CalculatorViewModel : ViewModel() {
                 "√" -> calculator.squareRoot(secondOperand)
                 "^" -> calculator.power(firstOperand!!, secondOperand)
                 "%" -> calculator.percent(firstOperand!!, secondOperand)
-                "π" -> calculator.pi()
-                else -> throw IllegalArgumentException("Invalid operator")
+                else -> currentInput.clear();
             }
             currentInput.clear()
-            currentInput.append(result)
+            var res = result.toString()
+            if (res[res.length - 1] == '0' && res[res.length - 2] == '.') {
+                res = res.dropLast(2)
+
+            }
+            currentInput.append(res)
             firstOperand = null
             currentOperator = null
         }

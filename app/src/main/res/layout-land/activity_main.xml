@@ -76,6 +76,25 @@
             android:text="/" />
 
         <!-- Row 2 -->
+
+        <Button
+            android:id="@+id/btn_multiply"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="*" />
+        <Button
+            android:id="@+id/btn_power"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="^" />
+
+
         <Button
             android:id="@+id/btn_7"
             style="@style/CalculatorButtonLand"
@@ -94,6 +113,7 @@
             android:layout_columnWeight="1"
             android:text="8" />
 
+        <!-- Row 3 -->
         <Button
             android:id="@+id/btn_9"
             style="@style/CalculatorButtonLand"
@@ -103,16 +123,36 @@
             android:layout_columnWeight="1"
             android:text="9" />
 
+
+
         <Button
-            android:id="@+id/btn_multiply"
+            android:id="@+id/btn_add"
             style="@style/CalculatorButtonLand"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:text="*" />
+            android:text="+" />
 
-        <!-- Row 3 -->
+        <Button
+            android:id="@+id/btn_subtract"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="-" />
+
+
+        <Button
+            android:id="@+id/btn_percent"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="%" />
+
         <Button
             android:id="@+id/btn_4"
             style="@style/CalculatorButtonLand"
@@ -140,16 +180,34 @@
             android:layout_columnWeight="1"
             android:text="6" />
 
+
         <Button
-            android:id="@+id/btn_subtract"
+            android:id="@+id/btn_equals"
             style="@style/CalculatorButtonLand"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:text="-" />
+            android:text="=" />
+        <Button
+            android:id="@+id/btn_sqrt"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="√" />
 
-        <!-- Row 4 -->
+        <Button
+            android:id="@+id/btn_pi"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="π" />
+
+        <!-- Row 6 -->
         <Button
             android:id="@+id/btn_1"
             style="@style/CalculatorButtonLand"
@@ -178,24 +236,15 @@
             android:text="3" />
 
         <Button
-            android:id="@+id/btn_add"
-            style="@style/CalculatorButtonLand"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:text="+" />
-
-        <!-- Row 5 -->
-        <Button
             android:id="@+id/btn_0"
             style="@style/CalculatorButtonLand"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
-            android:layout_columnSpan="2"
+            android:layout_columnSpan="1"
             android:layout_columnWeight="1"
             android:text="0" />
+
 
         <Button
             android:id="@+id/btn_decimal"
@@ -206,51 +255,15 @@
             android:layout_columnWeight="1"
             android:text="." />
 
-        <Button
-            android:id="@+id/btn_equals"
-            style="@style/CalculatorButtonLand"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:text="=" />
-
-        <!-- Row 6 -->
-        <Button
-            android:id="@+id/btn_sqrt"
-            style="@style/CalculatorButtonLand"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:text="√" />
 
         <Button
-            android:id="@+id/btn_power"
+            android:id="@+id/btn_plus_minus"
             style="@style/CalculatorButtonLand"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:text="^" />
-
-        <Button
-            android:id="@+id/btn_percent"
-            style="@style/CalculatorButtonLand"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:text="%" />
-
-        <Button
-            android:id="@+id/btn_pi"
-            style="@style/CalculatorButtonLand"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:text="π" />
+            android:text="+-" />
     </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

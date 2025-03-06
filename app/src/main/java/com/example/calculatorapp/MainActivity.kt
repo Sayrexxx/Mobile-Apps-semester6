@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         when (value) {
             "C" -> binding.display.setText(viewModel.clearDisplay())
             "=" -> binding.display.setText(viewModel.calculateResult())
-            "+", "-", "*", "/", "√", "^", "%", "π" -> binding.display.setText(viewModel.setOperator(value))
+            "+", "-", "*", "/", "√", "^", "%"-> binding.display.setText(viewModel.setOperator(value))
+            "⌫" -> binding.display.setText(viewModel.backspace())
+            "π" -> binding.display.setText(viewModel.appendToDisplay("3.141592"))
             else -> binding.display.setText(viewModel.appendToDisplay(value))
         }
     }
