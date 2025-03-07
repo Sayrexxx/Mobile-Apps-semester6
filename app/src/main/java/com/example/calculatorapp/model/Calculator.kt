@@ -20,7 +20,5 @@ class Calculator {
 
     fun power(a: Double, b: Double): Double = a.pow(b)
     fun percent(a: Double, b: Double): Double = (a * b) / 100
-    fun plus_minus(a: Double): Double {
-
-    }
+    fun plus_minus(a: Double): Double = -a
 }

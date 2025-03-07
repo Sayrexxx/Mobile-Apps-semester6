@@ -85,4 +85,16 @@ class CalculatorViewModel : ViewModel() {
         }
         return currentInput.toString()
     }
+
+    fun changeSignForNumeric(): String {
+        var operand = currentInput.toString()
+        if (operand[0] == '-') {
+            operand.drop(1)
+        } else if (operand[0] == '0'){
+            return operand
+        } else {
+            operand = "-$operand"
+        }
+        return operand
+    }
 }

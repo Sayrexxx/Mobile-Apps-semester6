@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
             "+", "-", "*", "/", "√", "^", "%"-> binding.display.setText(viewModel.setOperator(value))
             "⌫" -> binding.display.setText(viewModel.backspace())
             "π" -> binding.display.setText(viewModel.appendToDisplay("3.141592"))
+            "+-" -> binding.display.setText(viewModel.changeSignForNumeric())
             else -> binding.display.setText(viewModel.appendToDisplay(value))
         }
     }
