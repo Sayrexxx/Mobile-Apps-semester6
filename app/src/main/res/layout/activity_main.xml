@@ -40,7 +40,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:columnCount="4"
-        android:rowCount="6"
+        android:rowCount="7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +76,42 @@
             android:text="/" />
 
         <!-- Row 2 -->
+        <Button
+            android:id="@+id/btn_sin"
+            style="@style/CalculatorButton"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="Sin" />
+        <Button
+            android:id="@+id/btn_cos"
+            style="@style/CalculatorButton"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="cos" />
+        <Button
+            android:id="@+id/btn_tg"
+            style="@style/CalculatorButton"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="tg" />
+        <Button
+            android:id="@+id/btn_ctg"
+            style="@style/CalculatorButton"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="ctg" />
         <Button
             android:id="@+id/btn_7"
             style="@style/CalculatorButton"
