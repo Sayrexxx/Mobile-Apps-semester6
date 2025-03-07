@@ -69,6 +69,10 @@ class CalculatorViewModel : ViewModel() {
                 "*" -> calculator.multiply(firstOperand!!, secondOperand)
                 "/" -> calculator.divide(firstOperand!!, secondOperand)
                 "√" -> calculator.squareRoot(secondOperand)
+                "sin" -> calculator.sin(secondOperand)
+                "cos" -> calculator.cos(secondOperand)
+                "tg" -> calculator.tg(secondOperand)
+                "ctg" -> calculator.ctg(secondOperand)
                 "^" -> calculator.power(firstOperand!!, secondOperand)
                 "%" -> calculator.percent(firstOperand!!, secondOperand)
                 else -> currentInput.clear();
