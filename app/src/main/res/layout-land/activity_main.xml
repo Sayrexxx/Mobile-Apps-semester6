@@ -26,7 +26,7 @@
         style="@style/CalculatorDisplay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="0dp"
         android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -39,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:columnCount="6"
+        android:columnCount="7"
         android:rowCount="4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,6 +85,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:text="*" />
+
         <Button
             android:id="@+id/btn_power"
             style="@style/CalculatorButtonLand"
@@ -94,6 +95,14 @@
             android:layout_columnWeight="1"
             android:text="^" />
 
+        <Button
+            android:id="@+id/btn_sin"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="sin" />
 
         <Button
             android:id="@+id/btn_7"
@@ -123,8 +132,6 @@
             android:layout_columnWeight="1"
             android:text="9" />
 
-
-
         <Button
             android:id="@+id/btn_add"
             style="@style/CalculatorButtonLand"
@@ -143,7 +150,6 @@
             android:layout_columnWeight="1"
             android:text="-" />
 
-
         <Button
             android:id="@+id/btn_percent"
             style="@style/CalculatorButtonLand"
@@ -152,6 +158,15 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:text="%" />
+
+        <Button
+            android:id="@+id/btn_cos"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="cos" />
 
         <Button
             android:id="@+id/btn_4"
@@ -180,7 +195,6 @@
             android:layout_columnWeight="1"
             android:text="6" />
 
-
         <Button
             android:id="@+id/btn_equals"
             style="@style/CalculatorButtonLand"
@@ -189,6 +203,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:text="=" />
+
         <Button
             android:id="@+id/btn_sqrt"
             style="@style/CalculatorButtonLand"
@@ -206,6 +221,15 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:text="π" />
+
+        <Button
+            android:id="@+id/btn_tg"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="tg" />
 
         <!-- Row 6 -->
         <Button
@@ -245,7 +269,6 @@
             android:layout_columnWeight="1"
             android:text="0" />
 
-
         <Button
             android:id="@+id/btn_decimal"
             style="@style/CalculatorButtonLand"
@@ -255,7 +278,6 @@
             android:layout_columnWeight="1"
             android:text="." />
 
-
         <Button
             android:id="@+id/btn_plus_minus"
             style="@style/CalculatorButtonLand"
@@ -264,6 +286,15 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:text="+-" />
+
+        <Button
+            android:id="@+id/btn_ctg"
+            style="@style/CalculatorButtonLand"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="ctg" />
     </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

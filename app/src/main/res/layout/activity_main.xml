@@ -79,7 +79,7 @@
         <Button
             android:id="@+id/btn_sin"
             style="@style/CalculatorButton"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -88,7 +88,7 @@
         <Button
             android:id="@+id/btn_cos"
             style="@style/CalculatorButton"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -97,7 +97,7 @@
         <Button
             android:id="@+id/btn_tg"
             style="@style/CalculatorButton"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -106,7 +106,7 @@
         <Button
             android:id="@+id/btn_ctg"
             style="@style/CalculatorButton"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"

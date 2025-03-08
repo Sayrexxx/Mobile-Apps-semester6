@@ -21,7 +21,6 @@ class Calculator {
 
     fun power(a: Double, b: Double): Double = a.pow(b)
     fun percent(a: Double, b: Double): Double = (a * b) / 100
-    fun plus_minus(a: Double): Double = -a
 
     fun sin(a: Double): Double = kotlin.math.sin(a)
     fun cos(a: Double): Double = kotlin.math.cos(a)

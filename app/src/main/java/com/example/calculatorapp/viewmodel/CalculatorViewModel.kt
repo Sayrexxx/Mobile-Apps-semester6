@@ -61,21 +61,28 @@ class CalculatorViewModel : ViewModel() {
         if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
             clearDisplay()
         }
-        if (currentInput.isNotEmpty() && firstOperand != null && currentOperator != null) {
-            val secondOperand = currentInput.toString().toDouble()
-            val result = when (currentOperator) {
-                "+" -> calculator.add(firstOperand!!, secondOperand)
-                "-" -> calculator.subtract(firstOperand!!, secondOperand)
-                "*" -> calculator.multiply(firstOperand!!, secondOperand)
-                "/" -> calculator.divide(firstOperand!!, secondOperand)
-                "√" -> calculator.squareRoot(secondOperand)
-                "sin" -> calculator.sin(secondOperand)
-                "cos" -> calculator.cos(secondOperand)
-                "tg" -> calculator.tg(secondOperand)
-                "ctg" -> calculator.ctg(secondOperand)
-                "^" -> calculator.power(firstOperand!!, secondOperand)
-                "%" -> calculator.percent(firstOperand!!, secondOperand)
-                else -> currentInput.clear();
+        if (currentInput.isNotEmpty()) {
+            var result: Comparable<*>? = null
+            if (firstOperand != null && currentOperator != null) {
+                val secondOperand = currentInput.toString().toDouble()
+                result = when (currentOperator) {
+                    "+" -> calculator.add(firstOperand!!, secondOperand)
+                    "-" -> calculator.subtract(firstOperand!!, secondOperand)
+                    "*" -> calculator.multiply(firstOperand!!, secondOperand)
+                    "/" -> calculator.divide(firstOperand!!, secondOperand)
+                    "^" -> calculator.power(firstOperand!!, secondOperand)
+                    "%" -> calculator.percent(firstOperand!!, secondOperand)
+                    else -> currentInput.clear();
+                }
+            }
+            val currentOperand = currentInput.toString().toDouble()
+            result = when (currentOperator) {
+                "√" -> calculator.squareRoot(currentOperand)
+                "sin" -> calculator.sin(currentOperand)
+                "cos" -> calculator.cos(currentOperand)
+                "tg" -> calculator.tg(currentOperand)
+                "ctg" -> calculator.ctg(currentOperand)
+                else -> currentInput.clear()
             }
             currentInput.clear()
             var res = result.toString()

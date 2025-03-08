@@ -11,11 +11,11 @@
     </style>
 
     <style name="CalculatorDisplay">
-        <item name="android:textSize">50sp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:gravity">end</item>
         <item name="android:background">@color/display_background</item>
         <item name="android:textColor">@color/display_text</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">10dp</item>
         <item name="android:inputType">none</item>
         <item name="android:focusable">false</item>
         <item name="android:clickable">false</item>
