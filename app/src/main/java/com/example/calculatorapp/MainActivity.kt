@@ -1,15 +1,20 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.calculatorapp
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calculatorapp.databinding.ActivityMainBinding
 import com.example.calculatorapp.viewmodel.CalculatorViewModel
+import android.view.GestureDetector
+import android.view.MotionEvent
+import androidx.core.view.GestureDetectorCompat
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var gestureDetector: GestureDetectorCompat
     private val viewModel: CalculatorViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +38,25 @@ class MainActivity : AppCompatActivity() {
         buttons.forEach { button ->
             button.setOnClickListener { onButtonClick(button.text.toString()) }
         }
+        gestureDetector = GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                // Detect swipe down
+                if (e1 != null && e2.y - e1.y > 50 && kotlin.math.abs(velocityY) > 50) {
+                    binding.display.setText(viewModel.clearDisplay())  // Clear the display
+                    return true
+                }
+                return false
+            }
+        })
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
     }
 
     private fun onButtonClick(value: String) {
