@@ -14,7 +14,7 @@ class CalculatorViewModel : ViewModel() {
         if (currentInput.toString().length > 20) {
             currentInput.clear()
         }
-        if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
+        if (currentInput.toString() in listOf("empty input", "Division by zero", "error", ".")) {
             clearDisplay()
         }
         if ((value == "." && currentInput.contains('.'))) {
@@ -33,7 +33,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun backspace(): String {
-        if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
+        if (currentInput.toString() in listOf("empty input", "Division by zero", "error", ".")) {
             clearDisplay()
         }
         if (currentInput.isNotEmpty()) {
@@ -45,44 +45,73 @@ class CalculatorViewModel : ViewModel() {
         }
     }
 
+    private fun formatResult(result: String): String {
+        return if (result.endsWith(".0")) {
+            result.dropLast(2)
+        } else result
+    }
+
+    private fun handleUnaryOperator(operator: String) {
+        val operand = currentInput.toString().toDoubleOrNull() ?: return
+        val result = when (operator) {
+            "sin" -> calculator.sin(operand).toString()
+            "cos" -> calculator.cos(operand).toString()
+            "tg" -> calculator.tg(operand)
+            "ctg" -> calculator.ctg(operand)
+            "√" -> {
+                if (operand >= 0) {
+                    calculator.squareRoot(operand).toString()
+                } else {
+                    "error"
+                }
+            }
+            else -> return
+        }
+        currentInput.clear()
+        currentInput.append(result)
+        if (result == "error") {
+            currentOperator = null
+        }
+    }
+
     fun setOperator(operator: String): String {
-        if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
+        if (currentInput.toString() in listOf("empty input", "Division by zero", "error", ".")) {
             clearDisplay()
         }
         if (currentInput.isNotEmpty()) {
-            firstOperand = currentInput.toString().toDouble()
-            currentOperator = operator
-            currentInput.clear()
+            when (operator) {
+                "sin", "cos", "tg", "ctg", "√" -> {
+                    handleUnaryOperator(operator)
+                }
+                else -> {
+                    firstOperand = currentInput.toString().toDouble()
+                    currentOperator = operator
+                    currentInput.clear()
+                }
+            }
         }
         return currentInput.toString()
     }
 
     fun calculateResult(): String {
-        if (currentInput.toString() == "empty input" || currentInput.toString() == "Division by zero" || currentInput.toString() == "error") {
+        if (currentInput.toString() in listOf("empty input", "Division by zero", "error", ".")) {
             clearDisplay()
         }
-        if (currentInput.isNotEmpty()) {
-            var result: Comparable<*>? = null
-            if (firstOperand != null && currentOperator != null) {
-                val secondOperand = currentInput.toString().toDouble()
-                result = when (currentOperator) {
-                    "+" -> calculator.add(firstOperand!!, secondOperand)
-                    "-" -> calculator.subtract(firstOperand!!, secondOperand)
-                    "*" -> calculator.multiply(firstOperand!!, secondOperand)
-                    "/" -> calculator.divide(firstOperand!!, secondOperand)
-                    "^" -> calculator.power(firstOperand!!, secondOperand)
-                    "%" -> calculator.percent(firstOperand!!, secondOperand)
-                    else -> currentInput.clear();
-                }
-            }
-            val currentOperand = currentInput.toString().toDouble()
-            result = when (currentOperator) {
-                "√" -> calculator.squareRoot(currentOperand)
-                "sin" -> calculator.sin(currentOperand)
-                "cos" -> calculator.cos(currentOperand)
-                "tg" -> calculator.tg(currentOperand)
-                "ctg" -> calculator.ctg(currentOperand)
-                else -> currentInput.clear()
+        if (currentInput.isNotEmpty()  && currentOperator != null) {
+            val secondOperand = currentInput.toString().toDouble()
+            val result = when (currentOperator) {
+                "+" -> calculator.add(firstOperand!!, secondOperand)
+                "-" -> calculator.subtract(firstOperand!!, secondOperand)
+                "*" -> calculator.multiply(firstOperand!!, secondOperand)
+                "/" -> calculator.divide(firstOperand!!, secondOperand)
+                "√" -> calculator.squareRoot(firstOperand!!)
+                "sin" -> calculator.sin(firstOperand!!)
+                "cos" -> calculator.cos(firstOperand!!)
+                "tg" -> calculator.tg(firstOperand!!)
+                "ctg" -> calculator.ctg(firstOperand!!)
+                "^" -> calculator.power(firstOperand!!, secondOperand)
+                "%" -> calculator.percent(firstOperand!!, secondOperand)
+                else -> currentInput.clear();
             }
             currentInput.clear()
             var res = result.toString()
@@ -98,14 +127,15 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun changeSignForNumeric(): String {
-        var operand = currentInput.toString()
-        if (operand[0] == '-') {
-            operand.drop(1)
-        } else if (operand[0] == '0'){
-            return operand
+        if (currentInput.isEmpty()) return "0"
+        val operand = currentInput.toString()
+        if (operand == "0") return operand
+        val newOperand = if (operand.startsWith("-")) {
+            operand.substring(1)
         } else {
-            operand = "-$operand"
+            "-$operand"
         }
-        return operand
+        currentInput = StringBuilder(newOperand)
+        return currentInput.toString()
     }
 }

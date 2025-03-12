@@ -1,5 +1,6 @@
 package com.example.calculatorapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
             binding.btn8, binding.btn9, binding.btnAdd, binding.btnSubtract,
             binding.btnMultiply, binding.btnDivide, binding.btnDecimal,
             binding.btnEquals, binding.btnClear, binding.btnBackspace,
-            binding.btnSqrt, binding.btnPower, binding.btnPercent, binding.btnPi
+            binding.btnSqrt, binding.btnPower, binding.btnPercent, binding.btnPi,
+            binding.btnSin, binding.btnCos, binding.btnTg, binding.btnCtg, binding.btnPlusMinus
         )
 
         buttons.forEach { button ->
@@ -37,9 +39,14 @@ class MainActivity : AppCompatActivity() {
         when (value) {
             "C" -> binding.display.setText(viewModel.clearDisplay())
             "=" -> binding.display.setText(viewModel.calculateResult())
-            "+", "-", "*", "/", "√", "^", "%", "sin", "cos", "tg", "ctg"-> binding.display.setText(viewModel.setOperator(value))
+            "+", "-", "*", "/", "√", "^", "%", "sin", "cos", "tg", "ctg" -> {
+                binding.display.setText(viewModel.setOperator(value))
+            }
             "⌫" -> binding.display.setText(viewModel.backspace())
-            "π" -> binding.display.setText(viewModel.appendToDisplay("3.141592"))
+            "π" -> {
+                viewModel.clearDisplay();
+                binding.display.setText(viewModel.appendToDisplay("3.141592"))
+            }
             "+-" -> binding.display.setText(viewModel.changeSignForNumeric())
             else -> binding.display.setText(viewModel.appendToDisplay(value))
         }

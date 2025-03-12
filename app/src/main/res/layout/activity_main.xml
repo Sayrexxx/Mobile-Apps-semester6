@@ -84,7 +84,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:text="Sin" />
+            android:text="sin" />
         <Button
             android:id="@+id/btn_cos"
             style="@style/CalculatorButton"
