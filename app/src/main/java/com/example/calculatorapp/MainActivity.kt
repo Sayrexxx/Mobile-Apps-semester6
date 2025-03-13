@@ -226,7 +226,8 @@ class MainActivity : AppCompatActivity() {
 
     // Проверка, поднят ли большой палец
     private fun isThumbUp(tip: LandmarkProto.NormalizedLandmark, base: LandmarkProto.NormalizedLandmark): Boolean {
-        return tip.x < base.x || tip.x > base.x // Большой палец отведен в сторону
+        // Большой палец считается поднятым, если он отведен в сторону и поднят вверх
+        return (tip.x < base.x || tip.x > base.x) && tip.y < base.y
     }
 
 
