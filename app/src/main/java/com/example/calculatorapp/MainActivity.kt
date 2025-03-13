@@ -29,8 +29,10 @@ import java.util.concurrent.Executors
 import com.google.mediapipe.solutions.hands.Hands
 import com.google.mediapipe.solutions.hands.HandsOptions
 import com.google.mediapipe.solutions.hands.HandsResult
-import com.google.mlkit.vision.common.InputImage
 import kotlin.math.abs
+import android.os.Vibrator
+import android.os.VibrationEffect
+import android.content.Context
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var hands: Hands
     private var lastGestureTime: Long = 0
+    private lateinit var vibrator: Vibrator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.display.setText(viewModel.clearDisplay())
+
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         // Set up button listeners
         val buttons = listOf(
@@ -112,18 +117,38 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun vibrate() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(200)
+        }
+    }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
     }
 
     private fun onButtonClick(value: String) {
         when (value) {
-            "C" -> binding.display.setText(viewModel.clearDisplay())
-            "=" -> binding.display.setText(viewModel.calculateResult())
+            "C" -> {
+                binding.display.setText(viewModel.clearDisplay())
+                vibrate()
+            }
+            "=" -> {
+                val result = viewModel.calculateResult()
+                binding.display.setText(result)
+                if (result in listOf("empty input", "Division by zero", "error")) {
+                    vibrate()
+                }
+            }
             "+", "-", "*", "/", "√", "^", "%", "sin", "cos", "tg", "ctg" -> {
                 binding.display.setText(viewModel.setOperator(value))
             }
-            "⌫" -> binding.display.setText(viewModel.backspace())
+            "⌫" -> {
+                binding.display.setText(viewModel.backspace())
+                vibrate()
+            }
             "π" -> {
                 viewModel.clearDisplay();
                 binding.display.setText(viewModel.appendToDisplay("3.141592"))
@@ -429,7 +454,4 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
     }
-
-
-
 }
