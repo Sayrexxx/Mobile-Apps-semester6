@@ -69,4 +69,5 @@ dependencies {
     implementation(libs.camerax.extensions)
     implementation(libs.mediapipe.solution.core)
     implementation(libs.mediapipe.hands)
+    implementation(libs.androidx.splashscreen)
 }

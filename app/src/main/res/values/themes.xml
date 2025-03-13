@@ -45,5 +45,11 @@
         <item name="android:padding">0dp</item>
         <item name="android:layout_margin">4dp</item>
     </style>
+
+    <style name="Theme.MyApp.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="windowSplashScreenBackground">@color/purple_200</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
+    </style>
 </resources>
 

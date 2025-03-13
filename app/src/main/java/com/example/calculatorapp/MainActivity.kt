@@ -33,6 +33,7 @@ import kotlin.math.abs
 import android.os.Vibrator
 import android.os.VibrationEffect
 import android.content.Context
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var vibrator: Vibrator
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
