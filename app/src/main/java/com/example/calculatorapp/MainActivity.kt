@@ -58,13 +58,27 @@ class MainActivity : AppCompatActivity() {
     private var lastGestureTime: Long = 0
     private lateinit var vibrator: Vibrator
     private lateinit var db: FirebaseFirestore
+    private var isDarkTheme = false
+
+    private val sharedPreferences by lazy {
+        getSharedPreferences("app_theme", Context.MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         db = FirebaseFirestore.getInstance()
+        isDarkTheme = sharedPreferences.getBoolean("is_dark_theme", false)
+        applyTheme()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.btnThemeSwitch.setOnClickListener {
+            isDarkTheme = !isDarkTheme
+            sharedPreferences.edit().putBoolean("is_dark_theme", isDarkTheme).apply() // Сохраняем состояние темы
+            applyTheme()
+            recreate()
+        }
 
         val notificationMessage = intent.getStringExtra("notification_message")
         if (notificationMessage != null) {
@@ -139,6 +153,14 @@ class MainActivity : AppCompatActivity() {
         hands = Hands(this, handsOptions)
         hands.setResultListener { result ->
             processHandGestures(result)
+        }
+    }
+
+    private fun applyTheme() {
+        if (isDarkTheme) {
+            setTheme(R.style.AppTheme)
+        } else {
+            setTheme(R.style.Theme_CalculatorApp_Dark)
         }
     }
 
