@@ -1,7 +1,5 @@
 package com.example.calculatorapp
 
-package com.example.calculator111
-
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -96,11 +94,7 @@ class SetupPassKeyActivity : AppCompatActivity() {
             id = "calculator",
             password = key
         )
-        if (credentialManager == null) {
-            Log.e("PassKey", "Credential Manager НЕ поддерживается на этом устройстве!")
-        } else {
-            Log.d("PassKey", "Credential Manager доступен")
-        }
+        Log.d("PassKey", "Credential Manager доступен")
         val status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context)
         if (status != com.google.android.gms.common.ConnectionResult.SUCCESS) {
             Log.e("PassKey", "Google Play Services недоступен: код ошибки $status")
