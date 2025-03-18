@@ -9,6 +9,9 @@ class CalculatorViewModel : ViewModel() {
     private var currentInput = StringBuilder()
     private var currentOperator: String? = null
     private var firstOperand: Double? = null
+    private var lastFirstOperand: String? = null
+    private var lastSecondOperand: String? = null
+    private var lastOperator: String? = null
 
     fun appendToDisplay(value: String): String {
         if (currentInput.toString().length > 20) {
@@ -67,6 +70,8 @@ class CalculatorViewModel : ViewModel() {
             }
             else -> return
         }
+        lastOperator = operator
+        lastFirstOperand = operand.toString()
         currentInput.clear()
         currentInput.append(result)
         if (result == "error") {
@@ -113,6 +118,9 @@ class CalculatorViewModel : ViewModel() {
                 "%" -> calculator.percent(firstOperand!!, secondOperand)
                 else -> currentInput.clear();
             }
+            lastOperator = currentOperator
+            lastFirstOperand = firstOperand.toString()
+            lastSecondOperand = secondOperand.toString()
             currentInput.clear()
             var res = result.toString()
             if (res[res.length - 1] == '0' && res[res.length - 2] == '.') {
@@ -137,5 +145,21 @@ class CalculatorViewModel : ViewModel() {
         }
         currentInput = StringBuilder(newOperand)
         return currentInput.toString()
+    }
+
+    fun getCurrentExpression(): String {
+        return if (currentInput.isNotEmpty()) {
+            "$lastFirstOperand $lastOperator $lastSecondOperand"
+        } else {
+            ""
+        }
+    }
+
+    fun getCurrentExpressionForUnaryOperation(): String {
+        return if (currentInput.isNotEmpty()) {
+            "$lastFirstOperand $lastOperator"
+        } else {
+            ""
+        }
     }
 }
