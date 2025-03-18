@@ -2,6 +2,7 @@ package com.example.calculatorapp
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.credentials.CredentialManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -34,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var btnResetPassKey: Button
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -49,20 +52,6 @@ class LoginActivity : AppCompatActivity() {
         }
         val db = Firebase.firestore
         val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-        val themeSaving= ThemeSaving()
-        var newThemeState:Boolean = false
-        ThemeSaving().loadDeviceData(db, deviceId) { themeBoolean ->
-
-            if (themeBoolean) {
-
-                newThemeState=true
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-
-                newThemeState=false
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
         autoLogin(this)
         etPassKey = findViewById(R.id.etPassKey)
         btnLogin = findViewById(R.id.btnLogin)
@@ -83,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun requestAutofill() {
         val autofillManager = getSystemService(AutofillManager::class.java)
         autofillManager?.requestAutofill(etPassKey)

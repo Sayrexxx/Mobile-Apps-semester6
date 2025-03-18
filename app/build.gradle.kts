@@ -75,5 +75,15 @@ dependencies {
     implementation(libs.androidx.splashscreen)
     implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
     implementation("com.google.firebase:firebase-firestore-ktx")
+
+    implementation ("androidx.credentials:credentials-play-services-auth:1.5.0")
+    implementation ("com.google.android.gms:play-services-auth:20.0.0")
+    implementation("androidx.credentials:credentials:1.5.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
+    implementation ("androidx.biometric:biometric:1.2.0-alpha05")
+    implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }
 apply(plugin = "com.google.gms.google-services")
