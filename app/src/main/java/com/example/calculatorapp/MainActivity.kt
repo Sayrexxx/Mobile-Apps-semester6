@@ -2,6 +2,10 @@
 
 package com.example.calculatorapp
 
+import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +37,15 @@ import kotlin.math.abs
 import android.os.Vibrator
 import android.os.VibrationEffect
 import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
+import android.os.Build
+import androidx.core.app.NotificationCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.calculatorapp.model.Operation
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,12 +57,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hands: Hands
     private var lastGestureTime: Long = 0
     private lateinit var vibrator: Vibrator
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
+        db = FirebaseFirestore.getInstance()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val notificationMessage = intent.getStringExtra("notification_message")
+        if (notificationMessage != null) {
+            showNotificationDialog(notificationMessage)
+        }
+
+        binding.btnFetchOperations.setOnClickListener {
+            fetchOperationsAndSendNotification()
+        }
 
         binding.display.setText(viewModel.clearDisplay())
 
@@ -119,6 +142,99 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // Обновляем Intent активности
+        setIntent(intent)
+        // Проверяем, есть ли данные из уведомления
+        val notificationMessage = intent?.getStringExtra("notification_message")
+        if (notificationMessage != null) {
+            showNotificationDialog(notificationMessage)
+        }
+    }
+
+    private fun showNotificationDialog(message: String) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Last 3 Operations")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        dialog.show()
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
+    private fun fetchOperationsAndSendNotification() {
+        if (!isInternetAvailable()) {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        db.collection("calculations")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(3)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    Toast.makeText(this, "No operations found", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
+
+                val operations = documents.map { doc ->
+                    val expression = doc.getString("expression") ?: ""
+                    val result = doc.getString("result") ?: ""
+                    "$expression = $result"
+                }
+
+                sendNotification(operations.joinToString("\n"))
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Failed to fetch operations: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun sendNotification(message: String) {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("notification_message", message) // Передаем текст уведомления
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "operations_channel",
+                "Operations",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notificationBuilder = NotificationCompat.Builder(this, "operations_channel")
+            .setSmallIcon(R.drawable.splash_screen)
+            .setContentTitle("Last 3 Operations")
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        notificationManager.notify(1, notificationBuilder.build())
+    }
+
     private fun vibrate() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
@@ -139,13 +255,22 @@ class MainActivity : AppCompatActivity() {
             }
             "=" -> {
                 val result = viewModel.calculateResult()
+                val expression = viewModel.getCurrentExpression()
+                saveCalculationToFirestore(expression, result)
                 binding.display.setText(result)
                 if (result in listOf("empty input", "Division by zero", "error")) {
                     vibrate()
                 }
             }
-            "+", "-", "*", "/", "√", "^", "%", "sin", "cos", "tg", "ctg" -> {
+            "+", "-", "*", "/", "^", "%" -> {
                 binding.display.setText(viewModel.setOperator(value))
+            }
+            "√", "sin", "cos", "tg", "ctg" -> {
+                val result = viewModel.setOperator(value)
+                if (result !in listOf("empty input", "Division by zero", "error")) {
+                    saveCalculationToFirestore(viewModel.getCurrentExpressionForUnaryOperation(), result)
+                }
+                binding.display.setText(result)
             }
             "⌫" -> {
                 binding.display.setText(viewModel.backspace())
@@ -444,6 +569,22 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun saveCalculationToFirestore(expression: String, result: String) {
+        if (expression.isEmpty() or result.isEmpty()) return
+        val calculation = Operation(expression, result)
+
+        db.collection("calculations")
+            .add(calculation)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Firestore", "Document added with ID: ${documentReference.id}")
+                Toast.makeText(this, "Operation saved!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error adding document", e)
+                Toast.makeText(this, "Failed to save operation.", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onDestroy() {

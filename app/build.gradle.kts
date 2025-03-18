@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services") version "4.4.2" apply true
 }
 
 android {
@@ -70,4 +71,7 @@ dependencies {
     implementation(libs.mediapipe.solution.core)
     implementation(libs.mediapipe.hands)
     implementation(libs.androidx.splashscreen)
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
 }
+apply(plugin = "com.google.gms.google-services")
