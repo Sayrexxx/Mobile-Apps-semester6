@@ -19,18 +19,26 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
+            android:id="@+id/btn_theme_switch"
+            style="@style/CameraButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:text="Switch Theme" />
+        <Button
             android:id="@+id/btn_fetch_operations"
             style="@style/CameraButton"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:text="Fetch Operations" />
         <Button
             android:id="@+id/btn_camera"
             style="@style/CameraButton"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:text="Camera" />
