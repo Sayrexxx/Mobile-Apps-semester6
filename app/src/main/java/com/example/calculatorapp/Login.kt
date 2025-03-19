@@ -68,7 +68,10 @@ class LoginActivity : AppCompatActivity() {
         }
         Log.d("PassKey", "Поддержка Credential Manager: $credentialManager")
         btnResetPassKey.setOnClickListener {
-            setupBiometricAuthentication(this,this) // Используем биометрию для сброса
+            setupBiometricAuthenticationForRestoringPassKey(this,this)
+        }
+        btnLogin.setOnLongClickListener {
+            setupBiometricAuthentication(this,this)
         }
     }
 
@@ -125,7 +128,7 @@ class LoginActivity : AppCompatActivity() {
     private fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-    private fun setupBiometricAuthentication(activity: FragmentActivity, context:Context) {
+    private fun setupBiometricAuthentication(activity: FragmentActivity, context:Context): Boolean {
         val executor = ContextCompat.getMainExecutor(activity)
         val biometricPrompt = BiometricPrompt(activity, executor,
             object : BiometricPrompt.AuthenticationCallback() {
@@ -136,7 +139,37 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    resetPassKey()
+                    finish()
+                    startActivity(Intent(context, MainActivity::class.java))
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    showError("Аутентификация не удалась")
+                }
+            })
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Биометрическая аутентификация")
+            .setSubtitle("Используйте отпечаток пальца или лицо для сброса Pass Key")
+            .setNegativeButtonText("Отмена")
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
+        return true
+    }
+
+    private fun setupBiometricAuthenticationForRestoringPassKey(activity: FragmentActivity, context:Context) {
+        val executor = ContextCompat.getMainExecutor(activity)
+        val biometricPrompt = BiometricPrompt(activity, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    showError("Ошибка аутентификации: $errString")
+                }
+
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
                     finish()
                     startActivity(Intent(context, SetupPassKeyActivity::class.java))
                 }
