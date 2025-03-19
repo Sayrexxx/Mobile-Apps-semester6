@@ -18,6 +18,8 @@ mediapipe-solution-core = "0.10.0"
 mediapipe-hands = "0.10.0"
 visionCommon = "17.3.0"
 splashscreen = "1.0.1"
+credentials = "1.5.0"
+biometricKtx = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +53,8 @@ mediapipe-solution-core = { group = "com.google.mediapipe", name = "solution-cor
 mediapipe-hands = { group = "com.google.mediapipe", name = "hands", version.ref = "mediapipe-hands" }
 vision-common = { group = "com.google.mlkit", name = "vision-common", version.ref = "visionCommon" }
 androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+androidx-biometric-ktx = { group = "androidx.biometric", name = "biometric-ktx", version.ref = "biometricKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
